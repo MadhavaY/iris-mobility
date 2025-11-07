@@ -1,6 +1,8 @@
 import { Shield, Brain, Camera, Gauge, Eye, Cpu } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useRef } from 'react';
+import { useInView } from 'framer-motion';
 
 const features = [
   {
@@ -37,21 +39,26 @@ const features = [
 
 const Features = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const headerRef = useRef(null);
+  const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
 
   return (
     <section ref={ref} className="py-24 px-4 relative">
       <div className="container mx-auto">
         {/* Section header */}
-        <div className={`text-center max-w-3xl mx-auto mb-16 space-y-4 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-            Comprehensive AI Solutions
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Everything you need to build a smarter, safer traffic management system
-          </p>
-        </div>
+        <div 
+  ref={headerRef}
+  className={`text-center max-w-3xl mx-auto mb-16 space-y-4 transition-all duration-1000 ${
+    headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+  }`}
+>
+  <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+    Comprehensive AI Solutions
+  </h2>
+  <p className="text-lg text-muted-foreground">
+    Everything you need to build a smarter, safer traffic management system
+  </p>
+</div>
 
         {/* Features grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">

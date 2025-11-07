@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
+import f1 from "../assets/stop.png"
+import f2 from "../assets/f2.png"
+import yieldpng from "../assets/yield.png"
 
 const AI = () => {
   const slides = [
     {
       title: "Stop Sign Violation",
-      img: "/images/stop-sign-violation.jpg",
+      img: f1,
       text: "Detects vehicles that fail to stop at intersections using real-time object tracking and rule-based AI detection to enhance road safety compliance.",
     },
     {
       title: "Distracted Driving",
-      img: "/images/distracted-driving.jpg",
+      img: f2,
       text: "Leverages computer vision to identify distracted behavior such as mobile phone use or drowsiness, providing early alerts to prevent accidents.",
     },
     {
       title: "Failure to Yield",
-      img: "/images/failure-to-yield.jpg",
+      img: yieldpng,
       text: "Monitors traffic flow at intersections to flag vehicles that fail to yield to pedestrians or other vehicles, ensuring compliance with traffic laws.",
     },
   ];
@@ -30,14 +33,14 @@ const AI = () => {
 
   return (
     <section className="py-24 bg-background text-center overflow-hidden">
-      <h2 className="text-5xl font-bold mb-12 bg-gradient-primary bg-clip-text text-transparent">
+      <h2 className="text-4xl md:text-5xl font-bold text-foreground">
         AI for Traffic Safety
       </h2>
 
-      <div className="relative w-full max-w-5xl mx-auto h-[480px] overflow-hidden rounded-2xl shadow-lg">
+      <div className="relative w-full max-w-5xl mx-auto h-[550px] overflow-hidden rounded-2xl shadow-lg">
         {/* Slides */}
         <div
-          className="flex transition-transform duration-1000 ease-in-out"
+          className="flex transition-transform duration-2000 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {slides.map((slide, i) => (
@@ -48,7 +51,7 @@ const AI = () => {
               <img
                 src={slide.img}
                 alt={slide.title}
-                className="rounded-2xl shadow-lg w-full h-64 object-cover"
+                className="w-[35rem] h-auto object-contain rounded-lg"
               />
               <h3 className="text-2xl font-semibold text-foreground">
                 {slide.title}
