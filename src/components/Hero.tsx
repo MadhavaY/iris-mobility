@@ -148,7 +148,7 @@ const Hero = () => {
     >
       <div className="absolute inset-0 bg-gradient-hero" />
 
-      <div className="absolute inset-y-0 right-0 w-1/2">
+      <div className="absolute inset-y-0 right-0 w-1/2 hidden md:block">
         <img
           src={bg}
           alt="Background"
