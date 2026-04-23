@@ -1,0 +1,1966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IRIS Mobility — AI traffic intelligence for safer streets</title>
+<link rel="icon" href="assets/logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..400&family=Inter+Tight:wght@300..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* IRIS Mobility — light, editorial, Flock-inspired */
+:root {
+  /* cream/paper palette */
+  --bg: #F5F1EA;
+  --bg-2: #EFE9DF;
+  --paper: #FFFDF8;
+  --ink: #13140F;
+  --ink-2: #2A2B24;
+  --ink-dim: #5E5F56;
+  --ink-mute: #8A8B81;
+  --line: #1f1f1a1a;
+  --line-2: #1f1f1a22;
+  --line-3: #1f1f1a44;
+
+  /* accents — muted, Flock-y */
+  --green: #2F4A3A;     /* deep forest */
+  --green-2: #4E7A5C;   /* mid */
+  --rust: #B14A2B;      /* signal red/rust */
+  --amber: #C79A3A;     /* muted amber */
+  --sky: #4F7A99;       /* calm blue */
+
+  --sans: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --serif: 'Fraunces', 'Times New Roman', serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+.wrap { position: relative; z-index: 1; }
+img { max-width: 100%; display: block; }
+
+/* ============ NAV ============ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(14px) saturate(140%);
+  background: rgba(245, 241, 234, 0.78);
+  border-bottom: 1px solid var(--line);
+}
+.nav-left { display: flex; align-items: center; gap: 40px; }
+.logo { display: flex; align-items: center; gap: var(--logo-gap, 12px); font-weight: 600; font-size: var(--brand-size, 18px); letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+.logo img { width: var(--logo-size, 36px); height: var(--logo-size, 36px); object-fit: contain; }
+.nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.nav-links a { color: inherit; text-decoration: none; transition: color .15s; }
+.nav-links a:hover { color: var(--green); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.btn {
+  font-family: var(--sans); font-size: 14px; font-weight: 500;
+  padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line-3);
+  background: transparent; color: var(--ink); cursor: pointer;
+  transition: all .15s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.btn:hover { background: rgba(19,20,15,0.04); }
+.btn-primary {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink);
+}
+.btn-primary:hover { background: var(--green); border-color: var(--green); color: var(--paper); }
+.btn-arrow { transition: transform .15s; }
+.btn:hover .btn-arrow { transform: translateX(3px); }
+
+/* ============ HERO ============ */
+.hero {
+  padding: 120px 44px 60px;
+  position: relative;
+  min-height: 92vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  max-width: 1640px;
+  margin: 0 auto;
+}
+.hero-copy { max-width: none; padding-right: 20px; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.16em;
+  color: var(--ink-dim); text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--ink-dim); }
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 6vw, 84px);
+  font-weight: 350;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  margin: 20px 0 0;
+  color: var(--ink);
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--green);
+}
+.hero-sub {
+  font-size: 19px; color: var(--ink-2);
+  max-width: 540px; margin-top: 24px; line-height: 1.5;
+  font-family: var(--sans);
+}
+.hero-cta { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; align-items: center; }
+.hero-meta {
+  display: flex; gap: 28px; margin-top: 48px;
+  padding-top: 28px; border-top: 1px solid var(--line);
+}
+.meta-item { }
+.meta-num {
+  font-family: var(--serif);
+  font-size: 34px; font-weight: 350; letter-spacing: -0.02em; color: var(--ink);
+  line-height: 1;
+}
+.meta-num em { font-style: italic; color: var(--green); }
+.meta-label {
+  font-size: 12px; color: var(--ink-dim); margin-top: 6px;
+  max-width: 160px; line-height: 1.3;
+}
+
+/* Hero right: intersection */
+.hero-vis { position: relative; }
+
+/* ============ Intersection (real top-down) ============ */
+.isx-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #8B9387;
+  border: 1px solid var(--line-2);
+  box-shadow: 0 30px 80px rgba(19, 20, 15, 0.18), 0 2px 0 rgba(255,255,255,0.4) inset;
+}
+.isx-label {
+  position: absolute; top: 14px; left: 16px;
+  font-family: var(--mono); font-size: 11px; color: var(--paper);
+  background: rgba(19,20,15,0.78);
+  padding: 6px 10px; border-radius: 6px;
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 8px;
+  z-index: 5;
+}
+.isx-label .dot { width: 7px; height: 7px; border-radius: 50%; background: #7FC089; box-shadow: 0 0 8px #7FC089; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+
+.isx-tag {
+  position: absolute; top: 14px; right: 16px;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--ink); background: var(--paper);
+  padding: 6px 10px; border-radius: 6px;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--line);
+  z-index: 5;
+}
+
+.isx-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.isx-hud {
+  position: absolute;
+  bottom: 14px; left: 14px; right: 14px;
+  display: flex; gap: 8px;
+  z-index: 6;
+}
+.isx-hud-card {
+  flex: 1;
+  background: rgba(255, 253, 248, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.isx-hud-card .label {
+  font-family: var(--mono); font-size: 9px; color: var(--ink-dim);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.isx-hud-card .val {
+  font-family: var(--serif); font-size: 22px; font-weight: 400;
+  color: var(--ink); letter-spacing: -0.02em; line-height: 1.1; margin-top: 2px;
+}
+.isx-hud-card .val em { font-style: italic; color: var(--green); font-weight: 400; }
+.isx-hud-card .unit { font-family: var(--sans); font-size: 11px; color: var(--ink-dim); margin-left: 3px; }
+
+/* ============ Marquee ============ */
+.marquee {
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  background: var(--bg-2);
+}
+.marquee-inner { display: flex; gap: 72px; animation: marquee 36s linear infinite; padding-left: 72px; white-space: nowrap; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.city-badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--ink-2);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+.city-badge em { font-style: italic; color: var(--ink-dim); }
+.city-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+/* ============ SECTIONS ============ */
+section { position: relative; padding: 120px 28px; }
+.container { max-width: 1320px; margin: 0 auto; }
+.section-eyebrow { composes: eyebrow; }
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.6vw, 64px);
+  font-weight: 350;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  margin: 16px 0 0;
+  max-width: 920px;
+  color: var(--ink);
+}
+.section-title em {
+  font-style: italic;
+  color: var(--green);
+  font-weight: 300;
+}
+.section-sub {
+  font-size: 18px;
+  color: var(--ink-2);
+  margin-top: 20px;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+/* Positioning (Sit on top) */
+.position-section { background: var(--paper); }
+.position-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  margin-top: 56px; align-items: center;
+}
+.position-diagram {
+  background: var(--bg-2);
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  aspect-ratio: 4 / 3;
+  display: flex; flex-direction: column; gap: 0;
+  position: relative;
+}
+.pd-row {
+  flex: 1;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px;
+  position: relative;
+}
+.pd-row + .pd-row { border-top: 1px dashed var(--line-2); }
+.pd-label {
+  font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+  color: var(--ink-dim); letter-spacing: 0.08em;
+  width: 90px;
+}
+.pd-content {
+  flex: 1;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: var(--paper);
+  font-size: 15px; color: var(--ink);
+  font-weight: 500;
+}
+.pd-content.iris {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.pd-content.iris em { font-style: italic; color: #D9CBA2; }
+.pd-content.iris .iris-mark { width: 22px; height: 22px; opacity: 0.9; filter: invert(1); }
+.pd-flow-arrow {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.position-copy .feature {
+  display: grid; grid-template-columns: 30px 1fr; gap: 18px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+.position-copy .feature:last-child { border-bottom: 1px solid var(--line); }
+.feature-num {
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+  letter-spacing: 0.06em; padding-top: 3px;
+}
+.feature-title {
+  font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+.feature-desc { color: var(--ink-2); font-size: 15px; line-height: 1.5; margin: 0; }
+
+/* Capabilities */
+.cap-section { background: var(--bg); }
+.cap-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin-top: 48px;
+}
+.cap-card {
+  background: var(--paper);
+  padding: 26px 22px 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  position: relative;
+  display: flex; flex-direction: column; gap: 0;
+  transition: all .25s;
+  min-height: 280px;
+}
+.cap-card:hover {
+  background: #fff;
+  border-color: var(--line-3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(19,20,15,0.06);
+}
+.cap-visual {
+  height: 110px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: flex-start;
+}
+.cap-num {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-mute);
+  letter-spacing: 0.1em;
+}
+.cap-title {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 400; letter-spacing: -0.015em;
+  margin: 8px 0 8px; line-height: 1.15; color: var(--ink);
+}
+.cap-desc { color: var(--ink-2); font-size: 14px; flex: 1; line-height: 1.5; }
+
+/* Dashboard */
+.dash-section { background: var(--paper); }
+.dash-stage {
+  margin-top: 48px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  padding: 18px;
+  box-shadow: 0 30px 80px rgba(19,20,15,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.dash-chrome {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 10px 14px; border-bottom: 1px solid var(--line);
+  margin-bottom: 18px;
+}
+.dash-chrome-left { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.dash-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-2); box-shadow: 0 0 8px rgba(79,122,92,0.5); animation: pulse 1.6s infinite; }
+.dash-tabs { display: flex; gap: 6px; }
+.dash-tab {
+  font-family: var(--mono); font-size: 11px; padding: 6px 11px;
+  border-radius: 999px; border: 1px solid transparent;
+  color: var(--ink-dim); cursor: pointer;
+}
+.dash-tab.active { background: var(--paper); color: var(--ink); border-color: var(--line); }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 12px;
+}
+.dash-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.dash-panel h4 {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-dim);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin: 0 0 14px; font-weight: 500;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.dash-panel h4 .pill {
+  background: var(--green); color: var(--paper);
+  padding: 2px 7px; border-radius: 10px; font-size: 9px; letter-spacing: 0.05em;
+}
+.dash-panel.full { grid-column: 1 / -1; }
+.dash-panel .big {
+  font-family: var(--serif); font-size: 38px; font-weight: 350; letter-spacing: -0.025em;
+  color: var(--ink); line-height: 1;
+}
+.dash-panel .big em { font-style: italic; color: var(--green); }
+.dash-panel .sub {
+  font-size: 12px; color: var(--ink-dim); margin-top: 4px;
+}
+.delta-good { color: var(--green); font-family: var(--mono); font-size: 11px; }
+.delta-bad { color: var(--rust); font-family: var(--mono); font-size: 11px; }
+
+/* Heatmap */
+.heatmap {
+  display: grid; grid-template-columns: repeat(24, 1fr);
+  gap: 2px;
+}
+.heat-cell { border-radius: 2px; aspect-ratio: 1/1; transition: transform .15s; }
+.heat-cell:hover { transform: scale(1.4); }
+
+.bars { display: flex; align-items: flex-end; gap: 4px; height: 130px; }
+.bar { flex: 1; border-radius: 3px 3px 0 0; background: var(--green-2); }
+.bar.hot { background: var(--rust); }
+
+/* Feed */
+.feed-item {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink);
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-time { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); }
+.feed-tag {
+  font-family: var(--mono); font-size: 10px; padding: 3px 8px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: 0.06em;
+  border: 1px solid;
+}
+.feed-tag.red { color: var(--rust); border-color: var(--rust); background: #F7E5DA; }
+.feed-tag.amber { color: var(--amber); border-color: var(--amber); background: #FAEFD0; }
+
+/* Reports */
+.reports-section { background: var(--bg-2); }
+.reports-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  margin-top: 56px; align-items: center;
+}
+.report-mock {
+  background: var(--paper);
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  padding: 32px 36px;
+  box-shadow: 0 20px 60px rgba(19,20,15,0.08);
+  font-family: var(--serif);
+  position: relative;
+  transform: rotate(-1.5deg);
+}
+.report-mock.back {
+  position: absolute;
+  inset: -8px -8px auto auto;
+  width: 85%;
+  transform: rotate(2deg);
+  z-index: 0;
+  opacity: 0.75;
+  height: 96%;
+  background: #EADFCC;
+}
+.report-stack { position: relative; }
+
+.report-mock .rm-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 18px; border-bottom: 1px solid var(--line-2); margin-bottom: 20px;
+}
+.rm-title { font-size: 26px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+.rm-title em { font-style: italic; color: var(--green); }
+.rm-meta { font-family: var(--mono); font-size: 10px; color: var(--ink-dim); text-align: right; }
+.rm-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+.rm-metric .n { font-family: var(--serif); font-size: 32px; font-weight: 350; letter-spacing: -0.02em; line-height: 1; }
+.rm-metric .n em { font-style: italic; color: var(--green); }
+.rm-metric .l { font-family: var(--sans); font-size: 11px; color: var(--ink-dim); margin-top: 6px; }
+.rm-section { margin-top: 16px; }
+.rm-section h5 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-dim); margin: 0 0 10px; font-weight: 500; }
+.rm-chart { height: 54px; display: flex; align-items: flex-end; gap: 4px; }
+.rm-chart span { flex: 1; background: var(--green-2); border-radius: 2px 2px 0 0; opacity: 0.9; }
+.rm-chart span:nth-child(even) { background: var(--green); }
+.rm-bullets { font-family: var(--sans); font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.rm-bullets li { margin: 4px 0; }
+
+/* Timeline / How */
+.how-section { background: var(--paper); }
+.how-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  border-top: 1px solid var(--line);
+}
+.how-step {
+  padding: 36px 26px;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+.how-step:last-child { border-right: none; }
+.how-num {
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+  letter-spacing: 0.08em;
+}
+.how-title {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 400; letter-spacing: -0.01em;
+  margin: 12px 0 10px;
+}
+.how-desc { color: var(--ink-2); font-size: 14px; line-height: 1.5; margin: 0; }
+
+/* CTA */
+.cta-section {
+  text-align: center;
+  padding: 140px 28px;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative; overflow: hidden;
+}
+.cta-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  color: #D9CBA2; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.cta-eyebrow::before { content: ""; width: 22px; height: 1px; background: #D9CBA2; }
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 6vw, 80px);
+  font-weight: 300; letter-spacing: -0.025em; line-height: 1.02;
+  max-width: 900px; margin: 20px auto 0;
+}
+.cta-title em { font-style: italic; color: #D9CBA2; }
+.cta-sub { font-size: 18px; color: #C9C7BB; max-width: 540px; margin: 22px auto 0; }
+.cta-actions { margin-top: 34px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-section .btn { border-color: rgba(255,253,248,0.18); color: var(--paper); }
+.cta-section .btn:hover { background: rgba(255,253,248,0.08); }
+.cta-section .btn-primary { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.cta-section .btn-primary:hover { background: #D9CBA2; color: var(--ink); border-color: #D9CBA2; }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 56px 28px 32px;
+  background: var(--bg);
+}
+.foot-grid { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
+.foot-col h5 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; color: var(--ink-dim); letter-spacing: 0.1em; margin: 0 0 16px; font-weight: 500; }
+.foot-col ul { list-style: none; padding: 0; margin: 0; }
+.foot-col li { margin: 9px 0; }
+.foot-col a { color: var(--ink-2); text-decoration: none; font-size: 14px; }
+.foot-col a:hover { color: var(--green); }
+.foot-brand { max-width: 320px; font-size: 14px; color: var(--ink-dim); line-height: 1.5; }
+.foot-bottom {
+  max-width: 1320px; margin: 48px auto 0;
+  border-top: 1px solid var(--line); padding-top: 22px;
+  display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-mute);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 100px; }
+  .hero-vis { order: -1; max-width: 520px; margin: 0 auto; }
+  .cap-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid { grid-template-columns: 1fr 1fr; }
+  .dash-panel.wide { grid-column: 1 / -1; }
+  .position-grid, .reports-grid { grid-template-columns: 1fr; gap: 40px; }
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .how-step { border-bottom: 1px solid var(--line); }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@media (max-width: 640px) {
+  .nav { padding: 12px 18px; }
+  .nav-links { display: none; }
+  .hero { padding: 96px 18px 24px; }
+  section { padding: 72px 18px; }
+  .cap-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .how-steps { grid-template-columns: 1fr; }
+  .how-step { border-right: none; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .hero-meta { flex-wrap: wrap; gap: 20px; }
+}
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ========= Print ========= */
+@media print {
+  @page { size: letter portrait; margin: 0.5in; }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body { background: var(--paper) !important; }
+
+  /* Hide interactive-only chrome */
+  .nav { display: none !important; }
+  #tweak-panel { display: none !important; }
+  .marquee { display: none !important; }
+
+  /* Disable animations and reveal transitions */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  /* Hero: keep 2 columns on wide paper, stack if narrow */
+  .hero {
+    padding: 40px 32px 28px !important;
+    min-height: auto !important;
+    page-break-after: always;
+    break-after: page;
+    gap: 36px !important;
+  }
+  .hero-title { font-size: 44px !important; line-height: 1.08 !important; }
+  .hero-meta { margin-top: 32px !important; padding-top: 22px !important; }
+  .hero-cta { display: none !important; }
+  .hero-vis svg { max-width: 100%; height: auto; }
+
+  /* Each section starts on a new page */
+  section { padding: 48px 32px !important; break-before: page; page-break-before: always; }
+  section:first-of-type { break-before: auto; page-break-before: auto; }
+
+  /* Keep cards / features together */
+  .cap-card, .how-step, .feature, .position-diagram,
+  .dash-panel, .rm-head, .rm-metric, .report-mock, .feed-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Capability grid — 3 cols on paper */
+  .cap-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 18px !important; }
+  .cap-card { padding: 18px !important; }
+  .cap-visual { height: 90px !important; }
+
+  /* Positioning diagram */
+  .position-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+
+  /* Reports: unstack the rotated mock */
+  .report-mock { transform: none !important; box-shadow: 0 1px 2px rgba(19,20,15,0.08) !important; }
+  .report-stack .back { display: none !important; }
+  .reports-grid { grid-template-columns: 1fr 1fr !important; gap: 36px !important; }
+
+  /* Dashboard: compact */
+  .dash-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 12px !important; }
+  .dash-panel.wide { grid-column: span 3 !important; grid-row: span 1 !important; }
+  .dash-panel.full { grid-column: span 3 !important; }
+  .dash-chrome { background: #fff !important; }
+  .dash-live-dot { background: #4E9A6F !important; }
+
+  /* How it works: 4 cols */
+  .how-steps { grid-template-columns: repeat(4, 1fr) !important; gap: 16px !important; }
+
+  /* CTA */
+  .cta-section { padding: 48px 32px !important; }
+  .cta-actions { display: none !important; }
+
+  /* Footer */
+  footer { padding: 32px !important; break-before: page; page-break-before: always; }
+  .foot-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 28px !important; }
+
+  /* Section titles: slightly smaller */
+  .section-title { font-size: 32px !important; line-height: 1.15 !important; }
+
+  /* Avoid extra margin */
+  .container { padding: 0 !important; }
+
+  /* No sticky */
+  .nav { position: static !important; }
+
+  /* Intersection SVG — make sure it prints crisply */
+  .hero-vis { max-width: 100% !important; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>window.__LOGO__ = "data:image/png;base64,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V67E71g8SAG+DsUY4M6BayAAAskhgNHMMvdKlSrxXJVfu/pVq1aNW0BxGKuLA6r/c8tNCrW5jz76aIhowMiRI2eJ9Pr16yLx/Adzi54j9rQCKEZP8cI4CIBAGAlAMXrUa7Q3BytHiqrjUQ2JzZYqVYozjBkzJlscNGrU6NXEJcJ9l/bw6SNaMGnSpEUiPXfunEh8+/F710HfGpaiFUExpmjHo9kgAALxCUAxxmdj9U7z5s1ZQZ45c8aqXVVjRYvyttppw4YN+0qU7dSpUzFVG8nIf/z48cqiXopec1SkH37In3emyeg24pqfP/I7U/oqoa2oNz09fb2f9aMubwlAMXrLF9ZBAARCSACK0edOo3iGvItf9+7dd4iqvVpzbbtZcu2vjCf5xBNPcBU0t8YRyevWrcsRyguqV0YrOn/+/GSR9+TJk51FevQoC8G0zz/Pe6keL96jyJvMnz59eCozjVbK4HcnmR3hcd1QjB4DhnkQAIHwEcCol+Q+O3DgQBvhQlZW1jqRerX3irCNH3UCpOy5EH0nit8VdXyhLQHFGNqug+MgAAJeEcAo6BVZTbs01/akKEoK8rhI/VqpIerCT1rakCG8UCZt4MCB+N1I4QcCijGFOx9NBwEQiE0Ao2JsLoG7SkqGv4PcsmVL4HwLo0MlSpRgt2fNmvUzcUDRinaGsR3w2RsCUIzecIVVEACBEBOAYgxp58mVIBQ1hj8ApGguIW2Jt24XKVKEK6DvDq+Kg44dO+ZJRW+rhfWQE4BiDHkHwn0QAAH7BKAY7TNNqsVjx449JBzYsGEDBx5ct44/j0wL6koSW7DkSpx+/fq9I2xmZmZm2bINO6lHAIox9focLQYBECiAABRjAYCidlvOTf72t7/luckdO3jJdtrZs2cD2VS5103Tpk3Zv8aNG48VBxkZGVMC6TCcigQBKMZIdCMaAQIgYJMAFKNNmhG09a9//es/RLM+++wz3teaVuJwdCBKW4nr169df1ik/3P1f0SS9te//pXTBx54gNMHH3zwrvSHP/whnz/66KMcWZwijU8UF8qXL3+Db+AfEAgAASjGAHQCXAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEAABEACBsBL4/8c2Hp309PviAAAAAElFTkSuQmCC";</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" data-presets="react">
+// Icons
+const Icon = {
+  Eye: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>),
+  Gauge: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.2" fill="currentColor"/><path d="M4 18a8 8 0 1 1 16 0"/></svg>),
+  Near: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="3"/></svg>),
+  Heat: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><path d="M12 3c3 4 5 6 5 10a5 5 0 1 1-10 0c0-4 2-6 5-10Z"/></svg>),
+  Walk: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><circle cx="13" cy="4.5" r="1.8"/><path d="M10 22l2-7-2-3 3-3 3 3 3 2M8 10l3-2"/></svg>),
+  Signal: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><rect x="8" y="3" width="8" height="18" rx="2"/><circle cx="12" cy="8" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="16" r="1.5"/></svg>),
+  Report: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>),
+  Cloud: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><path d="M7 18a4 4 0 0 1-.8-7.9A5 5 0 0 1 16 8a4 4 0 0 1 1 7.9"/></svg>),
+  Edge: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={p.size||22} height={p.size||22}><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V6h10v4M7 15h.01M11 15h.01"/></svg>),
+  Arrow: (p) => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width={p.size||14} height={p.size||14}><path d="M5 12h14M13 6l6 6-6 6"/></svg>),
+};
+
+// Capability visuals (simple, on-brand SVGs)
+function CapVisual({ kind }) {
+  const stroke = "#2A2B24", green = "#2F4A3A", rust = "#B14A2B", amber = "#C79A3A", sky = "#4F7A99";
+  if (kind === 'detect') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <rect x="18" y="44" width="38" height="22" rx="3" fill={sky}/>
+        <rect x="15" y="26" width="44" height="13" fill="none" stroke={green} strokeDasharray="3 2" strokeWidth="1"/>
+        <text x="18" y="22" fill={green} fontFamily="ui-monospace" fontSize="8">SEDAN · 0.98</text>
+        <rect x="82" y="36" width="48" height="28" rx="3" fill={rust}/>
+        <rect x="79" y="18" width="54" height="14" fill="none" stroke={amber} strokeDasharray="3 2" strokeWidth="1"/>
+        <text x="82" y="14" fill={amber} fontFamily="ui-monospace" fontSize="8">SUV · 0.94</text>
+        <circle cx="60" cy="82" r="3.5" fill={stroke}/>
+        <text x="48" y="78" fill={stroke} fontFamily="ui-monospace" fontSize="7">PED</text>
+      </svg>
+    );
+  }
+  if (kind === 'speed') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <path d="M 30 80 A 40 40 0 0 1 130 80" fill="none" stroke="#e5e0d1" strokeWidth="5"/>
+        <path d="M 30 80 A 40 40 0 0 1 108 52" fill="none" stroke={green} strokeWidth="5" strokeLinecap="round"/>
+        <line x1="80" y1="80" x2="104" y2="58" stroke={stroke} strokeWidth="2"/>
+        <circle cx="80" cy="80" r="3.5" fill={stroke}/>
+        <text x="80" y="95" textAnchor="middle" fill={stroke} fontFamily="Fraunces" fontSize="16" fontStyle="italic">31 mph</text>
+      </svg>
+    );
+  }
+  if (kind === 'near') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <rect x="12" y="42" width="36" height="18" rx="2" fill={sky}/>
+        <rect x="100" y="52" width="18" height="36" rx="2" fill={rust}/>
+        <path d="M 52 55 L 98 62" stroke={rust} strokeWidth="1.5" strokeDasharray="3 3"/>
+        <text x="58" y="48" fill={rust} fontFamily="ui-monospace" fontSize="8">ΔT 0.4s</text>
+        <circle cx="75" cy="60" r="16" fill="none" stroke={rust} strokeWidth="1" strokeDasharray="2 2" opacity="0.5"/>
+      </svg>
+    );
+  }
+  if (kind === 'ped') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        {[...Array(6)].map((_,i)=>(
+          <rect key={i} x={30 + i*10} y="30" width="5" height="40" fill="#e5e0d1"/>
+        ))}
+        <circle cx="110" cy="40" r="4" fill={stroke}/>
+        <path d="M 110 45 L 110 60 M 106 52 L 114 52 M 106 68 L 110 60 L 114 68" stroke={stroke} strokeWidth="1.5" fill="none"/>
+        <rect x="96" y="24" width="30" height="48" fill="none" stroke={green} strokeWidth="1" strokeDasharray="3 2"/>
+      </svg>
+    );
+  }
+  if (kind === 'signal') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <rect x="65" y="20" width="30" height="60" rx="4" fill={stroke}/>
+        <circle cx="80" cy="33" r="6" fill={rust}/>
+        <circle cx="80" cy="50" r="6" fill="#3a3a33"/>
+        <circle cx="80" cy="67" r="6" fill="#3a3a33"/>
+        <path d="M 115 50 L 135 50 M 130 45 L 135 50 L 130 55" stroke={green} strokeWidth="1.5" fill="none"/>
+        <text x="120" y="42" fill={green} fontFamily="ui-monospace" fontSize="7">+ 8%</text>
+      </svg>
+    );
+  }
+  if (kind === 'heat') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        {[...Array(42)].map((_,i)=>{
+          const r = Math.floor(i/7), c = i%7;
+          const v = Math.sin(r*1.3 + c*0.9) * 0.5 + 0.5;
+          let fill = "#e5e0d1";
+          if (v > 0.3) fill = "#C4D1B8";
+          if (v > 0.5) fill = green;
+          if (v > 0.75) fill = amber;
+          if (v > 0.9) fill = rust;
+          return <rect key={i} x={20 + c*18} y={20 + r*12} width={15} height={9} fill={fill} rx="1"/>
+        })}
+      </svg>
+    );
+  }
+  if (kind === 'class') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <rect x="18" y="40" width="28" height="16" rx="2" fill={sky}/>
+        <text x="18" y="34" fill={stroke} fontFamily="ui-monospace" fontSize="7">SEDAN 68%</text>
+        <rect x="58" y="38" width="34" height="18" rx="2" fill={rust}/>
+        <text x="58" y="32" fill={stroke} fontFamily="ui-monospace" fontSize="7">SUV 24%</text>
+        <rect x="104" y="34" width="42" height="22" rx="2" fill={stroke}/>
+        <text x="104" y="28" fill={stroke} fontFamily="ui-monospace" fontSize="7">TRUCK 6%</text>
+        <circle cx="32" cy="78" r="4" fill={green}/>
+        <text x="40" y="82" fill={stroke} fontFamily="ui-monospace" fontSize="7">PED 2%</text>
+        <circle cx="92" cy="78" r="3" fill={amber}/>
+        <text x="100" y="82" fill={stroke} fontFamily="ui-monospace" fontSize="7">CYCLIST 0.3%</text>
+      </svg>
+    );
+  }
+  if (kind === 'count') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        {[12,18,24,33,28,46,55,68,82,70,56,44,40,50,62,72,88,94,70,50,32,24].map((h,i)=>(
+          <rect key={i} x={10 + i*6.5} y={92 - h*0.8} width="5" height={h*0.8} fill={i > 15 ? amber : green} rx="1"/>
+        ))}
+      </svg>
+    );
+  }
+  if (kind === 'time') {
+    return (
+      <svg viewBox="0 0 160 100" width="160" height="100">
+        <circle cx="80" cy="50" r="32" fill="none" stroke="#e5e0d1" strokeWidth="5"/>
+        <path d="M 80 18 A 32 32 0 0 1 108 66" fill="none" stroke={green} strokeWidth="5" strokeLinecap="round"/>
+        <text x="80" y="48" textAnchor="middle" fill={stroke} fontFamily="Fraunces" fontSize="18" fontStyle="italic">2.3s</text>
+        <text x="80" y="62" textAnchor="middle" fill={stroke} fontFamily="ui-monospace" fontSize="7">avg clearance</text>
+      </svg>
+    );
+  }
+  return null;
+}
+
+window.Icon = Icon;
+window.CapVisual = CapVisual;
+
+// Top-down real intersection with camera sensors at 4 corners, detection arcs,
+// and bounding boxes on moving vehicles. Pure SVG — no 3D perspective hacks.
+
+function Intersection() {
+  const [phase, setPhase] = React.useState('NS'); // NS or EW green
+  const [tick, setTick] = React.useState(0);
+  const [t, setT] = React.useState(0); // time in seconds for animation
+
+  React.useEffect(() => {
+    const seq = ['NS', 'NS_YEL', 'EW', 'EW_YEL'];
+    const dur = { NS: 5000, NS_YEL: 1400, EW: 5000, EW_YEL: 1400 };
+    let i = 0;
+    const advance = () => {
+      setPhase(seq[i]);
+      setTimeout(() => { i = (i + 1) % seq.length; advance(); }, dur[seq[i]]);
+    };
+    advance();
+  }, []);
+
+  React.useEffect(() => {
+    const id = setInterval(() => setTick(v => v + 1), 1600);
+    return () => clearInterval(id);
+  }, []);
+
+  // requestAnimationFrame loop for vehicle positions
+  React.useEffect(() => {
+    let raf, start = performance.now();
+    const loop = (now) => {
+      setT((now - start) / 1000);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const nsGo = phase === 'NS' || phase === 'NS_YEL';
+  const ewGo = phase === 'EW' || phase === 'EW_YEL';
+
+  const vph = 1180 + (tick % 50);
+  const speed = 28 + (tick % 3);
+
+  return (
+    <div className="isx-card">
+      <div className="isx-label"><span className="dot"/>LIVE · DAL-07</div>
+      <div className="isx-tag">MAIN × 5TH</div>
+
+      <svg className="isx-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice">
+        {/* Grass/ground texture */}
+        <defs>
+          <pattern id="grass" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+            <rect width="14" height="14" fill="#8B9387"/>
+            <circle cx="3" cy="4" r="0.7" fill="#7a8277" opacity="0.5"/>
+            <circle cx="10" cy="9" r="0.6" fill="#9aa196" opacity="0.5"/>
+            <circle cx="7" cy="12" r="0.5" fill="#7a8277" opacity="0.4"/>
+          </pattern>
+          <pattern id="asphalt" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+            <rect width="40" height="40" fill="#3d3f3c"/>
+            <circle cx="8" cy="12" r="0.6" fill="#4a4c49" opacity="0.6"/>
+            <circle cx="24" cy="6" r="0.5" fill="#333430" opacity="0.7"/>
+            <circle cx="32" cy="28" r="0.7" fill="#4a4c49" opacity="0.5"/>
+            <circle cx="12" cy="32" r="0.5" fill="#333430" opacity="0.7"/>
+          </pattern>
+          <pattern id="sidewalk" x="0" y="0" width="26" height="26" patternUnits="userSpaceOnUse">
+            <rect width="26" height="26" fill="#c9c4b5"/>
+            <line x1="0" y1="0" x2="26" y2="0" stroke="#b8b2a3" strokeWidth="0.8"/>
+            <line x1="0" y1="0" x2="0" y2="26" stroke="#b8b2a3" strokeWidth="0.8"/>
+            <line x1="13" y1="0" x2="13" y2="26" stroke="#b8b2a3" strokeWidth="0.5" opacity="0.5"/>
+          </pattern>
+
+          {/* Camera detection cone gradient */}
+          <radialGradient id="cone" cx="0" cy="0" r="1">
+            <stop offset="0%" stopColor="#D9CBA2" stopOpacity="0.5"/>
+            <stop offset="70%" stopColor="#D9CBA2" stopOpacity="0.15"/>
+            <stop offset="100%" stopColor="#D9CBA2" stopOpacity="0"/>
+          </radialGradient>
+
+          {/* Building shadow */}
+          <linearGradient id="bldg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#d7d2c4"/>
+            <stop offset="100%" stopColor="#b8b2a3"/>
+          </linearGradient>
+        </defs>
+
+        {/* Ground */}
+        <rect width="600" height="600" fill="url(#grass)"/>
+
+        {/* Building blocks in corners */}
+        <Block x={30} y={30} w={200} h={200} variant="a"/>
+        <Block x={370} y={30} w={200} h={200} variant="b"/>
+        <Block x={30} y={370} w={200} h={200} variant="c"/>
+        <Block x={370} y={370} w={200} h={200} variant="b"/>
+
+        {/* Sidewalks around intersection */}
+        <rect x="230" y="30" width="140" height="200" fill="url(#sidewalk)"/>
+        <rect x="230" y="370" width="140" height="200" fill="url(#sidewalk)"/>
+        <rect x="30" y="230" width="200" height="140" fill="url(#sidewalk)"/>
+        <rect x="370" y="230" width="200" height="140" fill="url(#sidewalk)"/>
+
+        {/* Roads (horizontal & vertical) */}
+        <rect x="0" y="240" width="600" height="120" fill="url(#asphalt)"/>
+        <rect x="240" y="0" width="120" height="600" fill="url(#asphalt)"/>
+
+        {/* Intersection box (asphalt) */}
+        <rect x="240" y="240" width="120" height="120" fill="#3d3f3c"/>
+
+        {/* Road curbs (thin darker lines along sidewalk edges) */}
+        <line x1="0" y1="240" x2="240" y2="240" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="360" y1="240" x2="600" y2="240" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="0" y1="360" x2="240" y2="360" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="360" y1="360" x2="600" y2="360" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="240" y1="0" x2="240" y2="240" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="360" y1="0" x2="360" y2="240" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="240" y1="360" x2="240" y2="600" stroke="#20221e" strokeWidth="1.2"/>
+        <line x1="360" y1="360" x2="360" y2="600" stroke="#20221e" strokeWidth="1.2"/>
+
+        {/* Lane markings */}
+        {/* center double yellow */}
+        <line x1="298" y1="0" x2="298" y2="240" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="302" y1="0" x2="302" y2="240" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="298" y1="360" x2="298" y2="600" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="302" y1="360" x2="302" y2="600" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="0" y1="298" x2="240" y2="298" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="0" y1="302" x2="240" y2="302" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="360" y1="298" x2="600" y2="298" stroke="#E6C24A" strokeWidth="1.4"/>
+        <line x1="360" y1="302" x2="600" y2="302" stroke="#E6C24A" strokeWidth="1.4"/>
+
+        {/* Dashed lane dividers (sub-lanes) */}
+        <line x1="270" y1="0" x2="270" y2="240" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="330" y1="0" x2="330" y2="240" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="270" y1="360" x2="270" y2="600" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="330" y1="360" x2="330" y2="600" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="0" y1="270" x2="240" y2="270" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="0" y1="330" x2="240" y2="330" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="360" y1="270" x2="600" y2="270" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+        <line x1="360" y1="330" x2="600" y2="330" stroke="#e8e4d7" strokeWidth="1" strokeDasharray="12 10" opacity="0.75"/>
+
+        {/* Crosswalks (zebra) */}
+        <Crosswalk dir="h" x={240} y={230} w={120} />
+        <Crosswalk dir="h" x={240} y={362} w={120} />
+        <Crosswalk dir="v" x={230} y={240} h={120} />
+        <Crosswalk dir="v" x={362} y={240} h={120} />
+
+        {/* Stop bars — US right-hand drive: SB stops at north edge (west half), NB at south edge (east half), EB at west edge (south half), WB at east edge (north half) */}
+        <line x1="240" y1="234" x2="300" y2="234" stroke="#ffffff" strokeWidth="2.5"/>
+        <line x1="300" y1="366" x2="360" y2="366" stroke="#ffffff" strokeWidth="2.5"/>
+        <line x1="234" y1="300" x2="234" y2="360" stroke="#ffffff" strokeWidth="2.5"/>
+        <line x1="366" y1="240" x2="366" y2="300" stroke="#ffffff" strokeWidth="2.5"/>
+
+        {/* Detection cones from 4 cameras (shown as faint wedges) */}
+        <g opacity="0.6">
+          <path d="M 230 230 L 120 330 A 160 160 0 0 1 120 170 Z" fill="url(#cone)"/>
+          <path d="M 370 230 L 480 170 A 160 160 0 0 1 480 330 Z" fill="url(#cone)"/>
+          <path d="M 230 370 L 120 430 A 160 160 0 0 0 120 270 Z" fill="url(#cone)" transform="rotate(180 230 370)" style={{transformOrigin:'230px 370px'}}/>
+          <path d="M 370 370 L 480 430 A 160 160 0 0 0 480 270 Z" fill="url(#cone)" transform="rotate(180 370 370)" style={{transformOrigin:'370px 370px'}}/>
+        </g>
+
+        {/* Vehicles — US right-hand drive.
+             SB (going south ↓) travels in west half (x=270 outer, 285 inner). Stops at y=234.
+             NB (going north ↑) travels in east half (x=315 inner, 330 outer). Stops at y=366.
+             EB (going east →) travels in south half (y=315 inner, 330 outer). Stops at x=366 when red. Wait — EB goes through, so EB stops BEFORE entering, at west edge x=234.
+             WB (going west ←) travels in north half (y=270 inner, 285 outer). Stops at east edge x=366.
+        */}
+        {nsGo ? (
+          <>
+            <Car dir="S" lane={270} t={t} offset={0} color="#e0ddce"/>
+            <Car dir="S" lane={285} t={t} offset={2.2} color="#B14A2B" detect/>
+            <Car dir="S" lane={270} t={t} offset={4.5} color="#4F7A99"/>
+            <Car dir="N" lane={315} t={t} offset={1.0} color="#2d2e27"/>
+            <Car dir="N" lane={330} t={t} offset={3.4} color="#C79A3A" detect/>
+          </>
+        ) : (
+          <>
+            <StoppedCar dir="S" lane={270} y={200} color="#e0ddce"/>
+            <StoppedCar dir="S" lane={285} y={168} color="#B14A2B"/>
+            <StoppedCar dir="N" lane={315} y={400} color="#2d2e27"/>
+            <StoppedCar dir="N" lane={330} y={432} color="#C79A3A"/>
+          </>
+        )}
+        {ewGo ? (
+          <>
+            <Car dir="E" lane={330} t={t} offset={0.5} color="#4F7A99" detect/>
+            <Car dir="E" lane={315} t={t} offset={2.8} color="#e0ddce"/>
+            <Car dir="W" lane={270} t={t} offset={1.6} color="#2d2e27"/>
+            <Car dir="W" lane={285} t={t} offset={3.9} color="#B14A2B"/>
+          </>
+        ) : (
+          <>
+            <StoppedCar dir="E" lane={330} x={200} color="#4F7A99"/>
+            <StoppedCar dir="E" lane={315} x={168} color="#e0ddce"/>
+            <StoppedCar dir="W" lane={270} x={400} color="#2d2e27"/>
+            <StoppedCar dir="W" lane={285} x={432} color="#B14A2B"/>
+          </>
+        )}
+
+        {/* Pedestrian */}
+        <Pedestrian ewGo={ewGo} t={t}/>
+
+        {/* Camera units at 4 corners — pointing inward toward intersection center (300,300) */}
+        <CameraUnit x={230} y={230} rot={45}/>
+        <CameraUnit x={370} y={230} rot={135}/>
+        <CameraUnit x={230} y={370} rot={-45}/>
+        <CameraUnit x={370} y={370} rot={-135}/>
+
+        {/* Traffic signal heads on poles (at stop-bar corners) */}
+        <SignalHead x={232} y={230} phase={phase} dir="ns"/>
+        <SignalHead x={368} y={370} phase={phase} dir="ns"/>
+        <SignalHead x={368} y={230} phase={phase} dir="ew"/>
+        <SignalHead x={232} y={370} phase={phase} dir="ew"/>
+      </svg>
+
+      <div className="isx-hud">
+        <div className="isx-hud-card">
+          <div className="label">Vehicles / hr</div>
+          <div className="val">{vph.toLocaleString()}</div>
+        </div>
+        <div className="isx-hud-card">
+          <div className="label">Avg speed</div>
+          <div className="val">{speed}<span className="unit">mph</span></div>
+        </div>
+        <div className="isx-hud-card">
+          <div className="label">Near-miss · today</div>
+          <div className="val"><em>↓ 62%</em></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Block({ x, y, w, h, variant }) {
+  const palette = {
+    a: { fill: '#D4C8A8', roof: '#BFB38E' },
+    b: { fill: '#CFC4B1', roof: '#B9AE9A' },
+    c: { fill: '#B9AE95', roof: '#A39882' },
+  }[variant];
+  return (
+    <g>
+      <rect x={x} y={y} width={w} height={h} fill={palette.fill}/>
+      {/* subtle inner divisions for visual interest */}
+      <rect x={x + 8} y={y + 8} width={w - 16} height={h - 16} fill="none" stroke={palette.roof} strokeWidth="0.8" opacity="0.6"/>
+      {variant === 'a' && (
+        <>
+          <rect x={x + 30} y={y + 30} width={60} height={80} fill={palette.roof} opacity="0.5"/>
+          <rect x={x + 110} y={y + 60} width={70} height={120} fill={palette.roof} opacity="0.4"/>
+        </>
+      )}
+      {variant === 'b' && (
+        <>
+          <rect x={x + 20} y={y + 80} width={160} height={90} fill={palette.roof} opacity="0.45"/>
+          <rect x={x + 60} y={y + 20} width={120} height={50} fill={palette.roof} opacity="0.35"/>
+        </>
+      )}
+      {variant === 'c' && (
+        <>
+          <rect x={x + 40} y={y + 40} width={120} height={120} fill={palette.roof} opacity="0.5"/>
+          <circle cx={x + 100} cy={y + 100} r={20} fill={palette.fill}/>
+        </>
+      )}
+      {/* tree */}
+      <circle cx={x + w - 14} cy={y + h - 14} r="8" fill="#4E7A5C" opacity="0.9"/>
+      <circle cx={x + 14} cy={y + 14} r="7" fill="#4E7A5C" opacity="0.85"/>
+    </g>
+  );
+}
+
+function Crosswalk({ dir, x, y, w, h }) {
+  const stripes = 6;
+  if (dir === 'h') {
+    const sw = (w - 8) / stripes - 2;
+    return (
+      <g>
+        {[...Array(stripes)].map((_, i) => (
+          <rect key={i} x={x + 4 + i * (sw + 2)} y={y} width={sw} height={8} fill="#f0ebde" opacity="0.92"/>
+        ))}
+      </g>
+    );
+  }
+  const sh = (h - 8) / stripes - 2;
+  return (
+    <g>
+      {[...Array(stripes)].map((_, i) => (
+        <rect key={i} x={x} y={y + 4 + i * (sh + 2)} width={8} height={sh} fill="#f0ebde" opacity="0.92"/>
+      ))}
+    </g>
+  );
+}
+
+function Car({ dir, lane, t, offset, color, detect }) {
+  // Car travels from one edge to the other over `duration` seconds
+  const duration = 11;
+  const progress = ((t + offset) % duration) / duration;
+
+  let x, y, rot;
+  if (dir === 'S') { x = lane; y = -30 + progress * 660; rot = 0; }
+  else if (dir === 'N') { x = lane; y = 630 - progress * 660; rot = 180; }
+  else if (dir === 'E') { x = -30 + progress * 660; y = lane; rot = 90; }
+  else { x = 630 - progress * 660; y = lane; rot = 270; }
+
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot})`}>
+      {/* shadow */}
+      <rect x="-9" y="-15" width="18" height="30" rx="3" fill="#000" opacity="0.22" transform="translate(1.5 1.5)"/>
+      <CarBody color={color}/>
+      {detect && (
+        <g>
+          <rect x="-13" y="-19" width="26" height="38" rx="2" fill="none" stroke="#4E7A5C" strokeWidth="1.2"/>
+          {/* corner ticks */}
+          <path d="M -13 -14 L -13 -19 L -8 -19" fill="none" stroke="#4E7A5C" strokeWidth="1.8"/>
+          <path d="M 13 -14 L 13 -19 L 8 -19" fill="none" stroke="#4E7A5C" strokeWidth="1.8"/>
+          <path d="M -13 14 L -13 19 L -8 19" fill="none" stroke="#4E7A5C" strokeWidth="1.8"/>
+          <path d="M 13 14 L 13 19 L 8 19" fill="none" stroke="#4E7A5C" strokeWidth="1.8"/>
+        </g>
+      )}
+    </g>
+  );
+}
+
+function StoppedCar({ dir, lane, x, y, color }) {
+  let px = x, py = y, rot = 0;
+  if (dir === 'S') { px = lane; rot = 0; }
+  else if (dir === 'N') { px = lane; rot = 180; }
+  else if (dir === 'E') { py = lane; rot = 90; }
+  else { py = lane; rot = 270; }
+  return (
+    <g transform={`translate(${px} ${py}) rotate(${rot})`}>
+      <rect x="-9" y="-15" width="18" height="30" rx="3" fill="#000" opacity="0.22" transform="translate(1.5 1.5)"/>
+      <CarBody color={color}/>
+    </g>
+  );
+}
+
+function CarBody({ color }) {
+  return (
+    <g>
+      <rect x="-8.5" y="-14" width="17" height="28" rx="3.5" fill={color}/>
+      {/* windshield */}
+      <rect x="-6.5" y="-11" width="13" height="8" rx="1.5" fill="#2b3a48" opacity="0.8"/>
+      {/* rear window */}
+      <rect x="-6.5" y="4" width="13" height="6" rx="1.5" fill="#2b3a48" opacity="0.75"/>
+      {/* roof line */}
+      <line x1="-8" y1="-3" x2="8" y2="-3" stroke="#00000044" strokeWidth="0.5"/>
+      <line x1="-8" y1="3" x2="8" y2="3" stroke="#00000044" strokeWidth="0.5"/>
+      {/* headlights */}
+      <circle cx="-5" cy="-13" r="1.2" fill="#fff6d8"/>
+      <circle cx="5" cy="-13" r="1.2" fill="#fff6d8"/>
+      {/* tail */}
+      <circle cx="-5" cy="13" r="0.9" fill="#c14228"/>
+      <circle cx="5" cy="13" r="0.9" fill="#c14228"/>
+    </g>
+  );
+}
+
+function Pedestrian({ ewGo, t }) {
+  // Pedestrian crosses the east sidewalk-to-sidewalk when NS is red (ewGo)
+  // they walk north-to-south across the top crosswalk
+  if (!ewGo) {
+    // Waiting on the curb
+    return (
+      <g transform="translate(245 225)">
+        <circle r="3" fill="#2d2e27"/>
+        <circle r="2" cy="-1" fill="#f0d2a8"/>
+      </g>
+    );
+  }
+  const progress = ((t % 6) / 6);
+  const x = 244 + progress * 112;
+  return (
+    <g transform={`translate(${x} 234)`}>
+      <circle r="3.5" fill="#2d2e27"/>
+      <circle r="2.2" cy="-1" fill="#f0d2a8"/>
+      <rect x="-14" y="-10" width="28" height="20" fill="none" stroke="#4F7A99" strokeWidth="1.2" rx="1"/>
+      <path d="M -14 -5 L -14 -10 L -9 -10" fill="none" stroke="#4F7A99" strokeWidth="1.6"/>
+      <path d="M 14 -5 L 14 -10 L 9 -10" fill="none" stroke="#4F7A99" strokeWidth="1.6"/>
+      <path d="M -14 5 L -14 10 L -9 10" fill="none" stroke="#4F7A99" strokeWidth="1.6"/>
+      <path d="M 14 5 L 14 10 L 9 10" fill="none" stroke="#4F7A99" strokeWidth="1.6"/>
+    </g>
+  );
+}
+
+function CameraUnit({ x, y, rot }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot})`}>
+      {/* pole/mount shadow */}
+      <circle r="9" fill="#000" opacity="0.25"/>
+      {/* arm */}
+      <rect x="0" y="-1.8" width="18" height="3.6" fill="#2A2B24" rx="1"/>
+      {/* camera housing */}
+      <rect x="13" y="-5" width="12" height="10" rx="1.5" fill="#13140F"/>
+      {/* lens */}
+      <circle cx="25" cy="0" r="2.5" fill="#4F7A99"/>
+      <circle cx="25" cy="0" r="1.2" fill="#0a0d13"/>
+      {/* rec dot */}
+      <circle cx="15" cy="-3" r="0.8" fill="#c14228"/>
+    </g>
+  );
+}
+
+function SignalHead({ x, y, phase, dir }) {
+  const red = dir === 'ns' ? (phase === 'EW' || phase === 'EW_YEL') : (phase === 'NS' || phase === 'NS_YEL');
+  const yel = dir === 'ns' ? (phase === 'NS_YEL') : (phase === 'EW_YEL');
+  const grn = dir === 'ns' ? (phase === 'NS') : (phase === 'EW');
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <rect x="-4" y="-11" width="8" height="22" rx="1.5" fill="#13140F"/>
+      <circle cx="0" cy="-7" r="2.2" fill={red ? '#D9482C' : '#2a2a24'}
+        style={{ filter: red ? 'drop-shadow(0 0 3px #D9482C)' : 'none' }}/>
+      <circle cx="0" cy="0" r="2.2" fill={yel ? '#E6B23A' : '#2a2a24'}
+        style={{ filter: yel ? 'drop-shadow(0 0 3px #E6B23A)' : 'none' }}/>
+      <circle cx="0" cy="7" r="2.2" fill={grn ? '#4E9A6F' : '#2a2a24'}
+        style={{ filter: grn ? 'drop-shadow(0 0 3px #4E9A6F)' : 'none' }}/>
+    </g>
+  );
+}
+
+window.Intersection = Intersection;
+
+// Live operations dashboard (light palette)
+function Dashboard() {
+  const [tab, setTab] = React.useState('heat');
+  const [tick, setTick] = React.useState(0);
+  React.useEffect(() => { const i = setInterval(()=>setTick(v=>v+1), 2200); return ()=>clearInterval(i); }, []);
+
+  const heatData = React.useMemo(() => {
+    const arr = [];
+    for (let r=0;r<7;r++) for (let c=0;c<24;c++){
+      const rush = (c>=7&&c<=9)||(c>=16&&c<=19) ? 0.55 : 0;
+      const wknd = (r===0||r===6) ? -0.22 : 0;
+      const rnd = Math.sin(r*31+c*7)*0.3+0.4;
+      arr.push(Math.max(0, Math.min(1, rnd+rush+wknd)));
+    }
+    return arr;
+  }, []);
+  const heatColor = (v) => {
+    if (v<0.15) return "#EFE9DF";
+    if (v<0.35) return "#D5DDC7";
+    if (v<0.55) return "#A8BB9A";
+    if (v<0.75) return "#D9B26A";
+    return "#C4613F";
+  };
+
+  const bars = [8,14,20,28,24,40,50,63,78,68,54,47,45,52,60,68,85,92,74,48,30,22,15,11];
+  const nowBar = tick % 24;
+
+  const feed = [
+    { time: '14:32:07', tag: 'NEAR-MISS', type: 'red',   text: 'SB left-turn vs NB thru · MAIN × 5TH' },
+    { time: '14:28:44', tag: 'SPEED',     type: 'amber', text: '38 mph in 25 zone · CEDAR AVE' },
+    { time: '14:21:19', tag: 'YIELD',     type: 'amber', text: 'Driver failed to yield · CROSSWALK-E' },
+    { time: '14:14:02', tag: 'NEAR-MISS', type: 'red',   text: 'Pedestrian vs RH turn · ELM × 12TH' },
+    { time: '14:06:55', tag: 'SPEED',     type: 'amber', text: '41 mph in 30 zone · SAUNDERS ST' },
+  ];
+
+  return (
+    <div className="dash-stage">
+      <div className="dash-chrome">
+        <div className="dash-chrome-left">
+          <span className="dash-live-dot"/>
+          IRIS OPS CENTER · connected to 42 intersections
+        </div>
+        <div className="dash-tabs">
+          <div className={`dash-tab ${tab==='heat'?'active':''}`} onClick={()=>setTab('heat')}>Risk Heatmap</div>
+          <div className={`dash-tab ${tab==='vol'?'active':''}`} onClick={()=>setTab('vol')}>Volume</div>
+          <div className={`dash-tab ${tab==='feed'?'active':''}`} onClick={()=>setTab('feed')}>Live Events</div>
+        </div>
+      </div>
+
+      <div className="dash-grid">
+        <div className="dash-panel wide" style={{ gridRow: 'span 2' }}>
+          <h4>Risk heatmap — 7d × 24h <span style={{color:'var(--ink-dim)'}}>MAIN × 5TH</span></h4>
+          <div className="heatmap">
+            {heatData.map((v,i)=>(
+              <div key={i} className="heat-cell" style={{ background: heatColor(v) }}/>
+            ))}
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:10,fontFamily:'var(--mono)',fontSize:10,color:'var(--ink-mute)'}}>
+            <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginTop:20,fontFamily:'var(--mono)',fontSize:10,color:'var(--ink-mute)'}}>
+            <span>LOW</span>
+            <div style={{flex:1,height:6,borderRadius:3,background:'linear-gradient(90deg,#EFE9DF,#A8BB9A,#D9B26A,#C4613F)'}}/>
+            <span>HIGH</span>
+          </div>
+        </div>
+
+        <div className="dash-panel">
+          <h4>Vehicles / hour <span className="pill">LIVE</span></h4>
+          <div className="bars">
+            {bars.map((h,i)=>(
+              <div key={i} className={`bar ${i===nowBar?'hot':''}`} style={{height:`${h}%`}}/>
+            ))}
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:8,fontFamily:'var(--mono)',fontSize:10,color:'var(--ink-mute)'}}>
+            <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+          </div>
+        </div>
+
+        <div className="dash-panel">
+          <h4>Pedestrian yield rate</h4>
+          <Donut value={68} tick={tick}/>
+        </div>
+
+        <div className="dash-panel">
+          <h4>Near-miss · last 24h</h4>
+          <div className="big"><em>14</em></div>
+          <div className="delta-good">↓ 34% vs baseline</div>
+          <div style={{marginTop:14,display:'grid',gridTemplateColumns:'1fr auto',gap:'4px 10px',fontSize:12,color:'var(--ink-2)'}}>
+            <span>SB left turn</span><span style={{color:'var(--ink)'}}>7</span>
+            <span>Ped conflict</span><span style={{color:'var(--ink)'}}>4</span>
+            <span>Rear-end risk</span><span style={{color:'var(--ink)'}}>3</span>
+          </div>
+        </div>
+
+        <div className="dash-panel">
+          <h4>Avg. approach speed</h4>
+          <div className="big">29<span style={{fontSize:14,color:'var(--ink-mute)',marginLeft:6,fontFamily:'var(--sans)'}}>mph</span></div>
+          <div className="sub">Threshold 30 mph</div>
+          <div style={{marginTop:18,height:6,background:'#EFE9DF',borderRadius:3,position:'relative'}}>
+            <div style={{position:'absolute',left:0,top:0,bottom:0,width:'72%',borderRadius:3,background:'linear-gradient(90deg,#2F4A3A,#C79A3A)'}}/>
+            <div style={{position:'absolute',left:'80%',top:-6,bottom:-6,width:2,background:'#B14A2B'}}/>
+          </div>
+        </div>
+
+        <div className="dash-panel full">
+          <h4>Live event feed <span style={{color:'var(--ink-dim)'}}>5 events · last 30 min</span></h4>
+          {feed.map((f,i)=>(
+            <div key={i} className="feed-item">
+              <span className="feed-time">{f.time}</span>
+              <span>{f.text}</span>
+              <span className={`feed-tag ${f.type}`}>{f.tag}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Donut({ value, tick }) {
+  const r = 34, c = 2*Math.PI*r;
+  const live = value + ((tick%4)-2);
+  const off = c * (1 - live/100);
+  return (
+    <div style={{display:'flex',alignItems:'center',gap:14}}>
+      <svg width="92" height="92" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#EFE9DF" strokeWidth="8"/>
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#2F4A3A" strokeWidth="8"
+          strokeDasharray={c} strokeDashoffset={off} strokeLinecap="round"
+          transform="rotate(-90 50 50)" style={{transition:'stroke-dashoffset 1s ease'}}/>
+        <text x="50" y="55" textAnchor="middle" fill="#13140F" fontSize="17" fontFamily="Fraunces" fontStyle="italic">{live}%</text>
+      </svg>
+      <div>
+        <div style={{fontSize:12,color:'var(--ink-dim)'}}>yielded to pedestrians</div>
+        <div className="delta-good" style={{marginTop:4}}>↑ 12% since install</div>
+      </div>
+    </div>
+  );
+}
+
+window.Dashboard = Dashboard;
+
+// Sections: Positioning, Capabilities, Reports, How it works, CTA, Footer
+const CAPS = [
+  { n:'01', t:'Vehicle detection & tracking', d:'Every car, truck, bus, pedestrian and cyclist — classified, counted, tracked across the whole intersection.', v:'detect' },
+  { n:'02', t:'Approach speed', d:'Per-lane speed distributions, 85th-percentile compliance, posted-limit violations — without speed guns or staff in the field.', v:'speed' },
+  { n:'03', t:'Near-miss detection', d:'Sub-second conflict events — the leading indicator of crashes. See risk before the crash report lands on your desk.', v:'near' },
+  { n:'04', t:'Pedestrian & cyclist safety', d:'Crosswalk usage, yield rates, right-hook conflicts, illegal crossings — the vulnerable road users your plan is trying to protect.', v:'ped' },
+  { n:'05', t:'Signal timing insight', d:'Measure how current phases perform against real demand. Recommend retimings backed by weeks of continuous data.', v:'signal' },
+  { n:'06', t:'Risk heatmap', d:'Roll 9 safety metrics into one map of your city. Prioritize intersections by risk, not by complaint volume.', v:'heat' },
+  { n:'07', t:'Classification mix', d:'Understand who actually uses your streets — by hour, day, and season. Bus lanes, truck routes, micro-mobility: all measured.', v:'class' },
+  { n:'08', t:'Turning movement counts', d:'Replace $1,500 manual studies with continuous, automated counts at every approach and exit.', v:'count' },
+  { n:'09', t:'Pedestrian clearance', d:'Measure actual crossing times versus posted, for every crosswalk. Meet MUTCD and your ADA obligations.', v:'time' },
+];
+
+function Capabilities() {
+  return (
+    <section id="platform" className="cap-section">
+      <div className="container">
+        <div className="eyebrow">The platform</div>
+        <h2 className="section-title">Nine safety metrics, per camera, <em>continuously.</em></h2>
+        <p className="section-sub">
+          Traditional intersection studies are episodic, expensive, and counts-only.
+          IRIS replaces them with always-on computer vision — running on the cameras your city already owns.
+        </p>
+        <div className="cap-grid">
+          {CAPS.map(c => (
+            <div key={c.n} className="cap-card">
+              <div className="cap-visual"><CapVisual kind={c.v}/></div>
+              <div className="cap-num">{c.n}</div>
+              <h3 className="cap-title">{c.t}</h3>
+              <p className="cap-desc">{c.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Positioning() {
+  return (
+    <section id="platform-fit" className="position-section">
+      <div className="container">
+        <div className="eyebrow">How we fit</div>
+        <h2 className="section-title">We sit on top of the infrastructure you <em>already have.</em></h2>
+        <p className="section-sub">
+          No new poles. No new trenching. No rip-and-replace.
+          IRIS plugs into your existing traffic cameras and runs either in our cloud or on a small box at the edge — your choice.
+        </p>
+
+        <div className="position-grid">
+          <div className="position-diagram">
+            <div className="pd-row">
+              <div className="pd-label">Your infra</div>
+              <div className="pd-content">Existing intersection cameras + ITS network</div>
+            </div>
+            <div className="pd-row">
+              <div className="pd-label">IRIS</div>
+              <div className="pd-content iris">
+                <span><em>IRIS</em> · cloud or on-prem edge</span>
+                <img src={window.__LOGO__} alt="" className="iris-mark"/>
+              </div>
+            </div>
+            <div className="pd-row">
+              <div className="pd-label">You see</div>
+              <div className="pd-content">Ops Center · alerts · grant &amp; council reports</div>
+            </div>
+          </div>
+
+          <div className="position-copy">
+            <div className="feature">
+              <div className="feature-num">A</div>
+              <div>
+                <h4 className="feature-title">Camera-agnostic.</h4>
+                <p className="feature-desc">RTSP, ONVIF or direct feed — we work with Axis, Bosch, Pelco, Hikvision, Iteris and most municipal DVR systems in use today.</p>
+              </div>
+            </div>
+            <div className="feature">
+              <div className="feature-num">B</div>
+              <div>
+                <h4 className="feature-title">Deploy in our cloud.</h4>
+                <p className="feature-desc">We pull your feeds over a secure VPN tunnel, run inference in our SOC-2 environment, and return clean structured data. Zero on-site hardware.</p>
+              </div>
+            </div>
+            <div className="feature">
+              <div className="feature-num">C</div>
+              <div>
+                <h4 className="feature-title">Or deploy on your edge.</h4>
+                <p className="feature-desc">For CJIS-sensitive or air-gapped networks, we drop a small NVIDIA-based edge appliance in the cabinet. Footage never leaves your network.</p>
+              </div>
+            </div>
+            <div className="feature">
+              <div className="feature-num">D</div>
+              <div>
+                <h4 className="feature-title">Live in days, not years.</h4>
+                <p className="feature-desc">Most agencies go from kickoff to live dashboard in under six days. No new procurement for cameras, poles, or fiber.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Reports() {
+  return (
+    <section id="reports" className="reports-section">
+      <div className="container">
+        <div className="eyebrow">Grant &amp; council ready</div>
+        <h2 className="section-title">Reports the funder and the council <em>actually read.</em></h2>
+        <p className="section-sub">
+          Every metric IRIS captures rolls into formats your team already has to produce —
+          Safe Streets for All applications, Vision Zero action-plan updates, council briefings, TxDOT &amp; FHWA reporting.
+        </p>
+
+        <div className="reports-grid">
+          <div className="report-stack">
+            <div className="report-mock back"/>
+            <div className="report-mock">
+              <div className="rm-head">
+                <div>
+                  <div className="rm-title">Quarterly Safety Brief <em>— Q3</em></div>
+                  <div style={{fontFamily:'var(--sans)', fontSize:13, color:'var(--ink-dim)', marginTop:6}}>Prepared for City Council · District 4</div>
+                </div>
+                <div className="rm-meta">CONFIDENTIAL<br/>IRIS · 42 sites</div>
+              </div>
+
+              <div className="rm-metrics">
+                <div className="rm-metric"><div className="n"><em>↓ 34%</em></div><div className="l">near-miss events vs. baseline</div></div>
+                <div className="rm-metric"><div className="n">68%</div><div className="l">pedestrian yield rate</div></div>
+                <div className="rm-metric"><div className="n">29<span style={{fontSize:14,color:'var(--ink-dim)',fontFamily:'var(--sans)'}}> mph</span></div><div className="l">avg approach speed</div></div>
+              </div>
+
+              <div className="rm-section">
+                <h5>NEAR-MISS TREND · 12 WEEKS</h5>
+                <div className="rm-chart">
+                  {[60,58,52,55,48,44,40,38,34,31,28,26].map((h,i)=><span key={i} style={{height:`${h}%`}}/>)}
+                </div>
+              </div>
+
+              <div className="rm-section">
+                <h5>RECOMMENDED ACTIONS</h5>
+                <ul className="rm-bullets">
+                  <li>· Retime SB left-turn at Main × 5th (projected −18% conflicts)</li>
+                  <li>· Add LPI at Elm × 12th crosswalk</li>
+                  <li>· Reduce posted limit on Cedar Ave corridor</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="feature" style={{borderTop:'1px solid var(--line)'}}>
+              <div className="feature-num">01</div>
+              <div>
+                <h4 className="feature-title">SS4A grant applications.</h4>
+                <p className="feature-desc">Hard crash, near-miss, and exposure data formatted to the exact fields USDOT requires. Supporting exhibits generated automatically.</p>
+              </div>
+            </div>
+            <div className="feature">
+              <div className="feature-num">02</div>
+              <div>
+                <h4 className="feature-title">Council &amp; public briefings.</h4>
+                <p className="feature-desc">Before/after comparisons, corridor heatmaps, district-level rollups — one-click export to PDF or slides. Plain language, not engineer-speak.</p>
+              </div>
+            </div>
+            <div className="feature">
+              <div className="feature-num">03</div>
+              <div>
+                <h4 className="feature-title">Vision Zero action-plan updates.</h4>
+                <p className="feature-desc">Quarterly progress against your high-injury-network goals, automatically. Keep the commitment honest.</p>
+              </div>
+            </div>
+            <div className="feature" style={{borderBottom:'1px solid var(--line)'}}>
+              <div className="feature-num">04</div>
+              <div>
+                <h4 className="feature-title">MUTCD &amp; ADA compliance.</h4>
+                <p className="feature-desc">Pedestrian clearance times, signal phase compliance, and accessibility checks — documented continuously, not once a decade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    { n:'01', t:'Connect your feeds', d:'RTSP, ONVIF or direct pull from your existing traffic cameras — typically over VPN. No on-site hardware required.' },
+    { n:'02', t:'We calibrate the scene', d:'Our computer-vision models adapt to each camera angle, lens distortion and sight line. Takes a day per intersection.' },
+    { n:'03', t:'Continuous inference', d:'24/7 processing in the IRIS cloud or on an NVIDIA edge box. Footage is never stored longer than needed for training.' },
+    { n:'04', t:'Daily data & reports', d:'Daily data reports delivered to your inbox — live dashboard, alerts, and grant/council-ready summaries. SS4A, Vision Zero, MUTCD.' },
+  ];
+  return (
+    <section id="how" className="how-section">
+      <div className="container">
+        <div className="eyebrow">How it works</div>
+        <h2 className="section-title">From your existing cameras to council-ready insight <em>in six days.</em></h2>
+        <div className="how-steps">
+          {steps.map(s=>(
+            <div key={s.n} className="how-step">
+              <div className="how-num">{s.n}</div>
+              <h3 className="how-title">{s.t}</h3>
+              <p className="how-desc" dangerouslySetInnerHTML={{__html:s.d}}/>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Cta() {
+  return (
+    <section className="cta-section">
+      <div className="cta-eyebrow">Ready when you are</div>
+      <h2 className="cta-title">Make every camera in your city <em>a safety instrument.</em></h2>
+      <p className="cta-sub">
+        Send us a sample RTSP feed — in one week we'll show you the insight your cameras are already capable of producing.
+      </p>
+      <div className="cta-actions">
+        <a className="btn btn-primary" href="#">Schedule a walkthrough <Icon.Arrow/></a>
+        <a className="btn" href="#">Request a sample report</a>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer>
+      <div className="foot-grid">
+        <div className="foot-col">
+          <div className="logo" style={{marginBottom:14}}>
+            <img src={window.__LOGO__} alt="IRIS"/>
+            <span>IRIS Mobility</span>
+          </div>
+          <p className="foot-brand">
+            AI-powered traffic intelligence for safer streets.
+            Sitting on top of the camera infrastructure cities already own.
+          </p>
+        </div>
+        <div className="foot-col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="#">Detection</a></li>
+            <li><a href="#">Near-miss</a></li>
+            <li><a href="#">Signal timing</a></li>
+            <li><a href="#">Reports</a></li>
+          </ul>
+        </div>
+        <div className="foot-col">
+          <h5>Solutions</h5>
+          <ul>
+            <li><a href="#">SS4A grants</a></li>
+            <li><a href="#">Vision Zero</a></li>
+            <li><a href="#">Signal retiming</a></li>
+            <li><a href="#">Council briefings</a></li>
+          </ul>
+        </div>
+        <div className="foot-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Customers</a></li>
+            <li><a href="#">Privacy &amp; Ethics</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="foot-bottom">
+        <span>© 2026 IRIS Mobility, Inc.</span>
+        <span>AUSTIN · ATLANTA</span>
+      </div>
+    </footer>
+  );
+}
+
+window.Capabilities = Capabilities;
+window.Positioning = Positioning;
+window.Reports = Reports;
+window.HowItWorks = HowItWorks;
+window.Cta = Cta;
+window.Footer = Footer;
+
+// App: Nav, Hero, Marquee, composes sections
+function App() {
+  React.useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div className="wrap">
+      <Nav/>
+      <Hero/>
+      <Marquee/>
+      <Positioning/>
+      <Capabilities/>
+      <DashSection/>
+      <Reports/>
+      <HowItWorks/>
+      <Cta/>
+      <Footer/>
+    </div>
+  );
+}
+
+function Nav() {
+  return (
+    <nav className="nav">
+      <div className="nav-left">
+        <a href="#" className="logo">
+          <img src={window.__LOGO__} alt="IRIS"/>
+          <span>IRIS Mobility</span>
+        </a>
+        <div className="nav-links">
+          <a href="#platform">Platform</a>
+          <a href="#platform-fit">How we fit</a>
+          <a href="#reports">Reports</a>
+          <a href="#how">Deployment</a>
+        </div>
+      </div>
+      <div className="nav-right">
+        <a className="btn btn-primary" href="#">Schedule a walkthrough <Icon.Arrow/></a>
+      </div>
+    </nav>
+  );
+}
+
+function Hero() {
+  return (
+    <header className="hero">
+      <div className="hero-copy">
+        <div className="eyebrow">AI traffic intelligence</div>
+        <h1 className="hero-title">
+          Turn the cameras your city already owns into <em>safety instruments.</em>
+        </h1>
+        <p className="hero-sub">
+          IRIS sits on top of your existing intersection feeds and measures nine safety metrics per camera — continuously.
+          Near-miss detection, speed, yield rates, signal performance. Grant- and council-ready reports, delivered.
+        </p>
+        <div className="hero-cta">
+          <a className="btn btn-primary" href="#">Schedule a walkthrough <Icon.Arrow/></a>
+          <a className="btn" href="#reports">See a sample report</a>
+        </div>
+        <div className="hero-meta">
+          <div className="meta-item">
+            <div className="meta-num"><em>9</em></div>
+            <div className="meta-label">safety metrics per camera, continuously</div>
+          </div>
+          <div className="meta-item">
+            <div className="meta-num">6 <span style={{fontSize:16,color:'var(--ink-dim)',fontFamily:'var(--sans)'}}>days</span></div>
+            <div className="meta-label">typical time to live dashboard</div>
+          </div>
+          <div className="meta-item">
+            <div className="meta-num">0</div>
+            <div className="meta-label">new cameras or poles required</div>
+          </div>
+        </div>
+      </div>
+      <div className="hero-vis"><Intersection/></div>
+    </header>
+  );
+}
+
+function Marquee() {
+  const items = [
+    { label: 'City of Richardson', italic: 'TX' },
+    { label: 'City of Dallas', italic: 'TX' },
+  ];
+  const row = (key) => (
+    <div className="marquee-inner" key={key}>
+      {[...items, ...items].map((it,i) => (
+        <div key={i} className="city-badge">
+          <span className="city-dot"/>
+          {it.label}{it.italic && <em>&nbsp;/ {it.italic}</em>}
+        </div>
+      ))}
+    </div>
+  );
+  return <div className="marquee">{row('a')}</div>;
+}
+
+function DashSection() {
+  return (
+    <section id="ops" className="dash-section">
+      <div className="container">
+        <div className="eyebrow">Ops Center</div>
+        <h2 className="section-title">One console for your whole network, <em>updating live.</em></h2>
+        <p className="section-sub">
+          Every intersection, every metric, every event — in one place. Triage near-miss alerts, compare corridors, pull a briefing in a click.
+        </p>
+        <Dashboard/>
+      </div>
+    </section>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+// Auto-print: wait for fonts + render + buffer
+(async () => {
+  try {
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  } catch (e) {}
+  // Wait two animation frames so React paints, then buffer
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  setTimeout(() => {
+    try { window.print(); } catch (e) {}
+  }, 700);
+})();
+
+</script>
+
+<script>
+// ===== Tweaks =====
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "logoSize": 63,
+  "brandSize": 18,
+  "brandGap": 14,
+  "accentGreen": "#2F4A3A",
+  "pageBg": "#ffffff"
+}/*EDITMODE-END*/;
+
+const TW = { ...TWEAK_DEFAULTS };
+
+function applyTweaks() {
+  const r = document.documentElement;
+  r.style.setProperty('--logo-size', TW.logoSize + 'px');
+  r.style.setProperty('--brand-size', TW.brandSize + 'px');
+  r.style.setProperty('--logo-gap', TW.brandGap + 'px');
+  r.style.setProperty('--green', TW.accentGreen);
+  r.style.setProperty('--bg', TW.pageBg);
+}
+applyTweaks();
+
+let panelOpen = false;
+
+function buildPanel() {
+  if (document.getElementById('tweak-panel')) return;
+  const el = document.createElement('div');
+  el.id = 'tweak-panel';
+  el.innerHTML = `
+    <style>
+      #tweak-panel {
+        position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+        width: 280px;
+        background: #FFFDF8;
+        border: 1px solid rgba(19,20,15,0.12);
+        border-radius: 14px;
+        padding: 16px 18px 18px;
+        box-shadow: 0 20px 50px rgba(19,20,15,0.18), 0 0 0 1px rgba(19,20,15,0.02);
+        font-family: 'Inter Tight', system-ui, sans-serif;
+        color: #13140F;
+        display: none;
+      }
+      #tweak-panel.open { display: block; }
+      #tweak-panel .tp-head {
+        display: flex; justify-content: space-between; align-items: center;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+        color: #5E5F56; padding-bottom: 10px;
+        border-bottom: 1px solid rgba(19,20,15,0.08);
+        margin-bottom: 14px;
+      }
+      #tweak-panel .tp-row { margin: 12px 0; }
+      #tweak-panel .tp-row label {
+        display: flex; justify-content: space-between; align-items: baseline;
+        font-size: 12px; color: #2A2B24; margin-bottom: 6px;
+      }
+      #tweak-panel .tp-row label .v {
+        font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #5E5F56;
+      }
+      #tweak-panel .tp-row input[type=range] {
+        width: 100%; accent-color: #2F4A3A;
+      }
+      #tweak-panel .tp-row input[type=color] {
+        width: 100%; height: 30px; border: 1px solid rgba(19,20,15,0.12); border-radius: 6px; background: transparent;
+        padding: 2px; cursor: pointer;
+      }
+      #tweak-panel .tp-reset {
+        margin-top: 10px; width: 100%;
+        font-family: 'JetBrains Mono', monospace; font-size: 10px;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 8px; border-radius: 6px;
+        background: transparent; border: 1px solid rgba(19,20,15,0.2);
+        color: #13140F; cursor: pointer;
+      }
+      #tweak-panel .tp-reset:hover { background: rgba(19,20,15,0.04); }
+    </style>
+    <div class="tp-head">
+      <span>Tweaks</span>
+      <span style="font-size:9px; color:#8A8B81">IRIS</span>
+    </div>
+    <div class="tp-row">
+      <label>Logo size <span class="v" id="v-logo">${TW.logoSize}px</span></label>
+      <input type="range" id="t-logo" min="24" max="64" step="1" value="${TW.logoSize}"/>
+    </div>
+    <div class="tp-row">
+      <label>Wordmark size <span class="v" id="v-brand">${TW.brandSize}px</span></label>
+      <input type="range" id="t-brand" min="14" max="28" step="1" value="${TW.brandSize}"/>
+    </div>
+    <div class="tp-row">
+      <label>Mark ↔ wordmark gap <span class="v" id="v-gap">${TW.brandGap}px</span></label>
+      <input type="range" id="t-gap" min="6" max="20" step="1" value="${TW.brandGap}"/>
+    </div>
+    <div class="tp-row">
+      <label>Accent — forest green</label>
+      <input type="color" id="t-green" value="${TW.accentGreen}"/>
+    </div>
+    <div class="tp-row">
+      <label>Page background</label>
+      <input type="color" id="t-bg" value="${TW.pageBg}"/>
+    </div>
+    <button class="tp-reset" id="t-reset">Reset to defaults</button>
+  `;
+  document.body.appendChild(el);
+
+  const bind = (id, key, unit, prop) => {
+    const input = el.querySelector('#t-' + id);
+    const vEl = el.querySelector('#v-' + id);
+    input.addEventListener('input', () => {
+      const v = input.type === 'range' ? Number(input.value) : input.value;
+      TW[key] = v;
+      if (vEl) vEl.textContent = v + (unit || '');
+      applyTweaks();
+      try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: v } }, '*'); } catch(e){}
+    });
+  };
+  bind('logo', 'logoSize', 'px');
+  bind('brand', 'brandSize', 'px');
+  bind('gap', 'brandGap', 'px');
+  bind('green', 'accentGreen');
+  bind('bg', 'pageBg');
+
+  el.querySelector('#t-reset').addEventListener('click', () => {
+    Object.assign(TW, TWEAK_DEFAULTS);
+    el.querySelector('#t-logo').value = TW.logoSize;
+    el.querySelector('#v-logo').textContent = TW.logoSize + 'px';
+    el.querySelector('#t-brand').value = TW.brandSize;
+    el.querySelector('#v-brand').textContent = TW.brandSize + 'px';
+    el.querySelector('#t-gap').value = TW.brandGap;
+    el.querySelector('#v-gap').textContent = TW.brandGap + 'px';
+    el.querySelector('#t-green').value = TW.accentGreen;
+    el.querySelector('#t-bg').value = TW.pageBg;
+    applyTweaks();
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { ...TWEAK_DEFAULTS } }, '*'); } catch(e){}
+  });
+}
+
+// Listener MUST be registered before announcing availability.
+window.addEventListener('message', (e) => {
+  const t = e.data && e.data.type;
+  if (t === '__activate_edit_mode') {
+    buildPanel();
+    const p = document.getElementById('tweak-panel');
+    if (p) p.classList.add('open');
+    panelOpen = true;
+  } else if (t === '__deactivate_edit_mode') {
+    const p = document.getElementById('tweak-panel');
+    if (p) p.classList.remove('open');
+    panelOpen = false;
+  }
+});
+
+// Announce availability after listener is live.
+try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+</script>
+</body>
+</html>
