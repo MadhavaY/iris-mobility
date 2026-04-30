@@ -1527,6 +1527,61 @@ function Cta() {
     </section>
   );
 }
+function About() {
+  const founders = [
+    {
+      initials: 'MR',
+      name: 'Mithilesh Reddy',
+      role: 'CEO & Co-Founder',
+      badge: 'Leadership',
+      avatarBg: '#E1F5EE', avatarColor: '#085041',
+      badgeBg: '#E1F5EE', badgeColor: '#085041',
+      bio: 'CEO & Co-Founder of Iris Mobility, where he leads the company’s vision, growth, and strategic direction. With a background in computer engineering, he brings a strong technical foundation to the mobility space while also overseeing financial strategy, and investor relations. His ability to bridge technology with business execution has been instrumental in driving Iris Mobility’s innovation and expansion.',
+      tags: ['Computer engineering', 'Investor relations', 'Strategy'],
+    },
+    {
+      initials: 'LP',
+      name: 'Likith Pichikala',
+      role: 'CPO & Co-Founder',
+      badge: 'Product',
+      avatarBg: '#EEEDFE', avatarColor: '#3C3489',
+      badgeBg: '#EEEDFE', badgeColor: '#3C3489',
+      bio: 'CPO & Co-Founder of Iris Mobility, leading product strategy, hardware development, and end-to-end system design. With a strong foundation in robotics engineering, he specializes in building scalable AI-powered solutions for real-world safety applications. He drives product execution from ideation to deployment, aligning engineering innovation with business objectives. His leadership in integrating hardware and AI systems has been instrumental in shaping Iris Mobility’s core offerings.',
+      tags: ['Robotics engineering', 'Hardware + AI', 'Product strategy'],
+    },
+    {
+      initials: 'AB',
+      name: 'Akash Buchi',
+      role: 'CTO & Co-Founder',
+      badge: 'Engineering',
+      avatarBg: '#FAECE7', avatarColor: '#712B13',
+      badgeBg: '#FAECE7', badgeColor: '#712B13',
+      bio: 'CTO & Co-Founder of Iris Mobility, where he leads software development and systems architecture. With a background in computer science and data science, he specializes in building scalable AI-driven platforms for real-world applications. He oversees the design and deployment of intelligent systems, ensuring high performance, reliability, and seamless integration across products. His work has been key in powering Iris Mobility’s core technology and platform scalability.',
+      tags: ['Computer science', 'Data science', 'Systems architecture'],
+    },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+      {founders.map((f) => (
+        <div key={f.initials} style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: 12, padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: f.avatarBg, color: f.avatarColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 500, flexShrink: 0 }}>
+              {f.initials}
+            </div>
+            <div>
+              <p style={{ margin: 0, fontSize: 15, fontWeight: 500, color: 'var(--ink)' }}>{f.name}</p>
+              <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--ink-dim)' }}>{f.role}</p>
+            </div>
+          </div>
+          <div style={{ height: '1px', background: 'var(--line)' }}/>
+          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.65, color: 'var(--ink-2)' }}>{f.bio}</p>
+          
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function Footer() {
   return (
@@ -1605,6 +1660,7 @@ function App() {
       <DashSection/>
       <Reports/>
       <HowItWorks/>
+      <AboutSection/>
       <Cta/>
       <Footer/>
     </div>
@@ -1624,6 +1680,7 @@ function Nav() {
           <a href="#platform-fit">How we fit</a>
           <a href="#reports">Reports</a>
           <a href="#how">Deployment</a>
+          <a href="#about">About</a>
         </div>
       </div>
       <div className="nav-right">
@@ -1696,6 +1753,21 @@ function DashSection() {
           Every intersection, every metric, every event — in one place. Triage near-miss alerts, compare corridors, pull a briefing in a click.
         </p>
         <Dashboard/>
+      </div>
+    </section>
+  );
+}
+
+function AboutSection() {
+  return (
+    <section id="about" className="about-section">
+      <div className="container">
+        <div className="eyebrow">About IRIS</div>
+        <h2 className="section-title">Transforming traffic safety with AI</h2>
+        <p className="section-sub">
+          Every intersection, every metric, every event — in one place. Triage near-miss alerts, compare corridors, pull a briefing in a click.
+        </p>
+        <About/>
       </div>
     </section>
   );
